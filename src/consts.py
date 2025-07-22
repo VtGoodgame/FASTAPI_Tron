@@ -3,6 +3,10 @@ import os
 
 load_dotenv()
 
+#Tron
+BASE_URL=os.getenv("BASE_URL")
+Prefix=os.getenv("Prefix")
+
 #DB
 BACKEND_URL = 'localhost:8000'
 DB_HOST=os.getenv('DB_HOST')
