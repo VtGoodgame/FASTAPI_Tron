@@ -1,79 +1,15 @@
 from src import consts as c
-import json
-import logging
-from typing import Any, Dict, Optional
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI
 import aiohttp
-from aiohttp import ClientSession, ClientError
-import asyncio
+from aiohttp import ClientSession
+from . import AsyncTronAPIHandler as AsyncHandler
+from src.database.models.db_models import Base
+from src.database.database import engine
 
-# Настройка асинхронного логгера
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
-class AsyncTronAPIHandler:
-    """Асинхронный класс для обработки запросов к API Tron"""
-    
-    def __init__(self, base_url: str = c.BASE_URL):
-        self.base_url = base_url
-        self.session = None
-        
-    async def __aenter__(self):
-        """Инициализация асинхронной сессии при входе в контекст"""
-        self.session = ClientSession()
-        return self
-        
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        """Закрытие сессии при выходе из контекста"""
-        if self.session:
-            await self.session.close()
-            
-    async def _make_request(self, endpoint: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        """Асинхронный базовый метод для выполнения запросов"""
-        try:
-            async with self.session.get(
-                f"{self.base_url}{endpoint}",
-                params=params,
-                timeout=aiohttp.ClientTimeout(total=10)
-            ) as response:
-                
-                if response.status != 200:
-                    error_data = await response.json()
-                    error_msg = error_data.get("message", "Неизвестная ошибка")
-                    logger.error(f"Ошибка API: {error_msg}")
-                    raise HTTPException(status_code=response.status, detail=error_msg)
-                    
-                return await response.json()
-                
-        except ClientError as e:
-            logger.error(f"Ошибка соединения: {str(e)}")
-            raise HTTPException(status_code=503, detail="Service unavailable")
-        except json.JSONDecodeError:
-            logger.error("Ошибка декодирования JSON")
-            raise HTTPException(status_code=500, detail="Invalid JSON response")
-        except asyncio.TimeoutError:
-            logger.error("Таймаут запроса")
-            raise HTTPException(status_code=504, detail="Request timeout")
-
-class AsyncAccountService(AsyncTronAPIHandler):
-    """Асинхронный сервис для работы с аккаунтами Tron"""
-    
-    async def get_account_info(self, address: str) -> Dict[str, Any]:
-        """Асинхронно получить информацию об аккаунте"""
-        if not address:
-            logger.error("Пустой параметр address")
-            raise HTTPException(status_code=400, detail="Address is required")
-        
-        return await self._make_request(f"accounts/{address}")
-
-    async def get_wallet_transactions(self, address: str) -> Dict[str, Any]:
-        """Асинхронно получить транзакции кошелька"""
-        if not address:
-            logger.error("Пустой параметр address")
-            raise HTTPException(status_code=400, detail="Address is required")
-        
-        return await self._make_request(f"accounts/{address}/transactions/trc20")
+Base.metadata.create_all(bind=engine)
 
 # Создание FastAPI приложения
 app = FastAPI(
@@ -94,7 +30,7 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup_event():
     """Инициализация при старте приложения"""
-    app.state.account_service = AsyncAccountService()
+    app.state.account_service = AsyncHandler.AsyncAccountService()
     app.state.account_service.session = ClientSession()
 
 @app.on_event("shutdown")
