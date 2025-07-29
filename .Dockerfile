@@ -1,9 +1,12 @@
 FROM python:3.12
 
-WORKDIR /app
+WORKDIR /FASTAPI_Tron
 
 ENV REDIS_HOST=""
-ENV REDIS_PORT
+ENV REDIS_PORT=""
+ENV REDIS_USERNAME=""
+# The password is set in the .env file, but you can also set it here if you prefer
+# If you set it here, make sure to keep it secure and not expose it in public
 ENV REDIS_PASSWORD=""
 
 #db
