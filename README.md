@@ -40,6 +40,7 @@ REDIS_PASSWORD=your_redis_password
 
 # === Tron API (опционально) ===
 TRON_API_TOKEN=your_token_here
+```
 В приложении он считывается с помощью функции `os.getenv` в файле констант (`consts.py`) и далее используется в основном модуле проекта.
 ### Инструкция по запуску
 
