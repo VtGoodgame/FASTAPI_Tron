@@ -48,7 +48,7 @@ async def get_account_info(address: str):
     """
     return await app.state.account_service.get_account_info(address)
 
-@app.get(c.Prefix + "/get_wallet_info/{address}", summary="Получить информацию по адресу")
+@app.get(c.Prefix + "/get_wallet_info/{address}", summary="Получить информацию о кошельке по адресу")
 async def get_wallet_info(address: str):
     """
     Получаем информацию о кошельке пользователя с использованием адреса

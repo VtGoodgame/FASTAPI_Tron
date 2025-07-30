@@ -52,6 +52,9 @@ class TRC20TransactionsResponse(BaseModel):
     meta: Meta = Field(..., description="Метаданные об ответе")
 
 
-# Вспомогательный метод для преобразования временных меток в datetime
 def ms_to_datetime(ms: int) -> datetime:
-    return datetime.fromtimestamp(ms / 1000.0, tz=timezone.utc)
+    seconds = ms / 1000.0
+    print(f"DEBUG: ms={ms} → seconds={seconds}")
+    dt = datetime.fromtimestamp(seconds, tz=timezone.utc)
+    print(f"DEBUG: result={dt}")
+    return dt
