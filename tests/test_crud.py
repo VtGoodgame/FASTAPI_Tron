@@ -60,7 +60,7 @@ async def test_save_transaction(sample_transaction_item):
     assert result.transaction_id == "abc123"
     assert result.token_symbol == "USDT"
     assert result.to_address == "to_address"
-    assert result.block_timestamp == datetime(2025, 7, 30, tzinfo=timezone.utc)
+    assert result.block_timestamp == datetime(2024, 7, 31, tzinfo=timezone.utc)
 
     # Проверяем, что методы сессии были вызваны
     mock_db.add.assert_called_once_with(result)

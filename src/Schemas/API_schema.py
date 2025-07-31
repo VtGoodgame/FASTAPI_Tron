@@ -53,8 +53,6 @@ class TRC20TransactionsResponse(BaseModel):
 
 
 def ms_to_datetime(ms: int) -> datetime:
-    seconds = ms / 1000.0
-    print(f"DEBUG: ms={ms} → seconds={seconds}")
-    dt = datetime.fromtimestamp(seconds, tz=timezone.utc)
-    print(f"DEBUG: result={dt}")
+    seconds = ms / 1000
+    dt = datetime.utcfromtimestamp(seconds).replace(tzinfo=timezone.utc)
     return dt
