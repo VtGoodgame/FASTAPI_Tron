@@ -8,6 +8,8 @@ VALID_ADDRESS=os.getenv("VALID_ADDRESS")
 INVALID_ADDRESS=os.getenv("INVALID_ADDRESS")
 
 #Tron
+                                        #API CHECK_ADDRESS - https://api.shasta.trongrid.io/wallet/validateaddress
+                                        #CHECK_ACCAUNT - https://api.shasta.trongrid.io/wallet/getaccountresource
 CHECK_ADDRESS=os.getenv("CHECK_ADDRESS")
 CHECK_ACCAUNT=os.getenv("CHECK_ACCAUNT")
 PREFIX=os.getenv("PREFIX")
