@@ -54,7 +54,7 @@ CHECK_ACCAUNT=https://api.trongrid.io/wallet/getaccount
 PREFIX=/api/v03
 
 # === Опционально: токен для расширенных запросов ===
-TRON_API_TOKEN=your_token_here ```
+TRON_API_TOKEN=your_token_here 
 
  === ⚠️ На данный момент TronGrid не требует токен для базовых запросов, но в будущем он может понадобиться. === 
 
