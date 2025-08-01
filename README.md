@@ -90,6 +90,7 @@ pip install -r requirements.txt
   Документация API: http://127.0.0.1:8000/docs**
 
 ##Запуск Тестов
+
 **1. Перейти в папку проекта**
 ```bash
 cd .\FASTAPI_Tron\
